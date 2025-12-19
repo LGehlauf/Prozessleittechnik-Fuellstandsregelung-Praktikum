@@ -69,22 +69,23 @@ uint8_t controlTwoPoint(uint8_t fillLevel_percent){
 // corresponding to a distinct fill level using look up tables
 // Mode = 2
 uint8_t controlLookUpTable(uint8_t fillLevel_percent){
+  const uint8_t numRows = 3;
 
   // separate the fill level and the power level in 3 segments
   // min: 0, max: 100!!
-  const uint8_t fillLevelTable[3] = {
+  const uint8_t fillLevelTable[numRows] = {
     70, 
     40, 
     0
   };
   // min: 0, max: 255!!
-  const uint8_t pumpPowerTable[3] = {
+  const uint8_t pumpPowerTable[numRows] = {
     0, 
     100,
     255
   };
 
-  for(int i = 0; i < 3; i++){
+  for(int i = 0; i < numRows; i++){
     // is the fill level higher than a threshold?
     if (fillLevel_percent > fillLevelTable[i]) {
       // set the corresponding pump power level
@@ -173,16 +174,18 @@ void loop(){
 
     if (incomingChar >= '0' && incomingChar <= '4') {
       Mode = incomingChar - '0';
+      delay(500);
       Serial.print("Mode: ");
       Serial.println(Mode);
-      delay(1000);
+      delay(2000);
 
     } else if (incomingChar == 10) {
       // ignore -> it's a new line
     } else {
+      delay(500);
       Serial.print("InputError. Mode: ");
       Serial.println(Mode);
-      delay(1000);
+      delay(2000);
 
     }
   }

@@ -166,7 +166,7 @@ void loop(){
   uint8_t distance_mm = readDistanceFiltered();
   uint8_t fillLevel_mm = zeroPosition_mm - distance_mm;
   uint8_t fillLevel_percent = round(100 * (float)fillLevel_mm / (float)fillLevelMax_mm);
-  uint8_t potiVal = readPoti();
+  uint8_t potiVal_percent = readPoti();
 
   // reads from the serial input, if there is any
   if (Serial.available() > 0) {
@@ -192,7 +192,7 @@ void loop(){
 
   switch (Mode) {
     case 0:
-      pump = constrain(potiVal*2.55, 0, 255);
+      pump = constrain(potiVal_percent*2.55, 0, 255);
       break;
     case 1:
       pump = controlTwoPoint(fillLevel_percent);
@@ -204,7 +204,7 @@ void loop(){
       pump = controlSchmittTrigger(fillLevel_percent);
       break;
     case 4:
-      pump = controlPID(potiVal, fillLevel_percent);
+      pump = controlPID(potiVal_percent, fillLevel_percent);
       break;
   }
 
@@ -212,7 +212,7 @@ void loop(){
 
   Serial.print(0); Serial.print(",");
   // value 2
-  Serial.print(potiVal); Serial.print(",");
+  Serial.print(potiVal_percent); Serial.print(",");
   // value 3
   Serial.print(fillLevel_percent); Serial.print(",");
   // value 4
